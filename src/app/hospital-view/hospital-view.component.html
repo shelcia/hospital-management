@@ -65,6 +65,7 @@
                       type="button"
                       class="btn btn-outline-dark"
                       title="Edit"
+                      (click)="initialiseUpdatedRecord(item.hospitalname)"
                     >
                       <i class="material-icons" style="font-size: 15px">edit</i>
                     </button>
@@ -133,6 +134,44 @@
     </div>
   </div>
 </section>
+
+<!-- MODAL -->
+<div [ngClass]="modal ? 'custom-modal modal fade show d-block' : 'd-none'">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Editing Hospital</h4>
+        <button type="button" class="close" (click)="handleClose()">X</button>
+      </div>
+      <div class="modal-body">
+        <input
+          type="text"
+          class="form-control mb-3"
+          placeholder="Enter Hospital name"
+          [(ngModel)]="updatedRecord.hospital"
+          required
+        />
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Contact"
+          [(ngModel)]="updatedRecord.contact"
+          required
+        />
+      </div>
+      <div className="modal-footer">
+        <div class="m-3 text-end">
+          <button type="button" class="btn btn-danger" (click)="handleClose()">
+            Close
+          </button>
+          <button type="button" class="btn btn-success ms-2" (click)="onEdit()">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer class="navbar navbar-dark bg-primary shadow-sm">
   <div class="container-fluid">

@@ -29,10 +29,10 @@ export class HospitalsService {
     );
   }
 
-  public editHospitals(name: String, number: String) {
+  public editHospitals(name: String, updatedRecord: any) {
     const body = {
-      hospitalname: name,
-      contactnumber: number,
+      hospitalname: updatedRecord.hospital,
+      contactnumber: updatedRecord.contact,
     };
     console.log(
       this.http
@@ -71,11 +71,14 @@ export class HospitalsService {
     );
   }
 
-  public editDepartment(name: String, number: String) {
+  public editDepartment(name: String, updatedRecord: any) {
     const body = {
-      hospitalname: name,
-      contactnumber: number,
+      hospitalname: updatedRecord.hospital,
+      contactnumber: updatedRecord.contact,
+      head: updatedRecord.head,
+      departmentname: updatedRecord.dept,
     };
+
     console.log(
       this.http
         .put(`${this.deptURL}/${name}`, body)
