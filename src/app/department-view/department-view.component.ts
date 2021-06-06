@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HospitalsService } from '../hospitals.service';
 
+// Import from library
+import {
+  DialogLayoutDisplay,
+  ToastNotificationInitializer,
+} from '@costlydeveloper/ngx-awesome-popup';
+
 @Component({
   selector: 'app-department-view',
   templateUrl: './department-view.component.html',
@@ -143,17 +149,42 @@ export class DepartmentViewComponent implements OnInit {
   }
 
   onEdit() {
-    this.HospitalService.editDepartment(
-      this.updatedRecord.original,
-      this.updatedRecord
-    );
-    setTimeout(() => {
-      let observable = this.HospitalService.getDepartments(
-        this.route.snapshot.params.id
-      );
-      observable.subscribe((data) => (this.data = data));
-      this.handleClose();
-    }, 3000);
+    if (
+      this.updatedRecord.dept === '' ||
+      this.updatedRecord.contact === '' ||
+      this.updatedRecord.head === ''
+    ) {
+      this.toastNotification('No empty fields allowed');
+      return;
+    }
+    let regex = /^[0-9]{10}$/g;
+    let alphaRegex = /^[a-zA-Z ]*$/;
+    let headRegex = /^[a-zA-Z ]*$/;
+
+    if (!alphaRegex.test(this.updatedRecord.dept)) {
+      this.toastNotification('Enter only alphabets in Department Field');
+      return;
+    }
+    if (!headRegex.test(this.updatedRecord.head)) {
+      this.toastNotification('Enter only alphabets in HOD Field');
+      return;
+    } else {
+      if (!regex.test(this.updatedRecord.contact)) {
+        this.toastNotification('Enter valid 10 digit number');
+      } else {
+        this.HospitalService.editDepartment(
+          this.updatedRecord.original,
+          this.updatedRecord
+        );
+        setTimeout(() => {
+          let observable = this.HospitalService.getDepartments(
+            this.route.snapshot.params.id
+          );
+          observable.subscribe((data) => (this.data = data));
+          this.handleClose();
+        }, 3000);
+      }
+    }
   }
 
   ngOnInit() {
@@ -162,5 +193,16 @@ export class DepartmentViewComponent implements OnInit {
     let observable = this.HospitalService.getDepartments(id);
     observable.subscribe((data) => console.log(data));
     observable.subscribe((data) => (this.data = data));
+  }
+
+  toastNotification(content: string) {
+    const newToastNotification = new ToastNotificationInitializer();
+    newToastNotification.setTitle('Warning!');
+    newToastNotification.setMessage(content);
+
+    newToastNotification.setConfig({
+      LayoutType: DialogLayoutDisplay.WARNING, // SUCCESS | INFO | NONE | DANGER | WARNING
+    });
+    newToastNotification.openToastNotification$();
   }
 }

@@ -11,6 +11,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { HospitalsService } from './hospitals.service';
 import { FormsModule } from '@angular/forms';
 
+// Import from library
+import {
+  NgxAwesomePopupModule,
+  DialogConfigModule,
+  ConfirmBoxConfigModule,
+  ToastNotificationConfigModule,
+} from '@costlydeveloper/ngx-awesome-popup';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,6 +32,8 @@ import { FormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    NgxAwesomePopupModule.forRoot(), // Essential, mandatory main module.
+    ToastNotificationConfigModule.forRoot(), // Essential, mandatory toast module.
   ],
   providers: [HospitalsService],
   bootstrap: [AppComponent],

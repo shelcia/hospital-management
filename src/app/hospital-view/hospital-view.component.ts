@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HospitalsService } from '../hospitals.service';
 
+// Import from library
+import {
+  DialogLayoutDisplay,
+  ToastNotificationInitializer,
+} from '@costlydeveloper/ngx-awesome-popup';
+
 @Component({
   selector: 'app-hospital-view',
   templateUrl: './hospital-view.component.html',
@@ -61,15 +67,15 @@ export class HospitalViewComponent implements OnInit {
       return;
     }
     //REGEX VALIDATION
-    let regex = /^[0-9]{10}$/g;
-    let alphaRegex = /^[a-zA-Z ]*$/g;
+    let regex = /^[0-9]{10}$/;
+    let alphaRegex = /^[a-zA-Z ]*$/;
     if (regex.test(this.contact) === false) {
       this.alert = true;
       this.ifSuccess = false;
       this.content = 'Enter valid 10 digit number';
     } else {
       console.log(alphaRegex.test(this.hospital) === false);
-      if (!alphaRegex.test(this.hospital) === false) {
+      if (!alphaRegex.test(this.hospital)) {
         this.alert = true;
         this.ifSuccess = false;
         this.content = 'Enter only alphabets in Hospital Field';
@@ -115,20 +121,50 @@ export class HospitalViewComponent implements OnInit {
   }
 
   onEdit() {
-    this.HospitalService.editHospitals(
-      this.updatedRecord.orginial,
-      this.updatedRecord
-    );
-    setTimeout(() => {
-      let observable = this.HospitalService.getHospitals();
-      observable.subscribe((data) => (this.data = data));
-      this.handleClose();
-    }, 3000);
+    if (
+      this.updatedRecord.hospital === '' ||
+      this.updatedRecord.contact === ''
+    ) {
+      this.toastNotification('No empty fields allowed');
+      return;
+    }
+
+    let regex = /^[0-9]{10}$/;
+    let alphaRegex = /^[a-zA-Z ]*$/;
+    if (regex.test(this.updatedRecord.contact) === false) {
+      this.toastNotification('Enter valid 10 digit number');
+    } else {
+      console.log(alphaRegex.test(this.updatedRecord.hospital) === false);
+      if (!alphaRegex.test(this.updatedRecord.hospital)) {
+        this.toastNotification('Enter only alphabets in Hospital Field');
+      } else {
+        this.HospitalService.editHospitals(
+          this.updatedRecord.orginial,
+          this.updatedRecord
+        );
+        setTimeout(() => {
+          let observable = this.HospitalService.getHospitals();
+          observable.subscribe((data) => (this.data = data));
+          this.handleClose();
+        }, 3000);
+      }
+    }
   }
 
   ngOnInit() {
     let observable = this.HospitalService.getHospitals();
     observable.subscribe((data) => console.log(data));
     observable.subscribe((data) => (this.data = data));
+  }
+
+  toastNotification(content: string) {
+    const newToastNotification = new ToastNotificationInitializer();
+    newToastNotification.setTitle('Warning!');
+    newToastNotification.setMessage(content);
+
+    newToastNotification.setConfig({
+      LayoutType: DialogLayoutDisplay.WARNING, // SUCCESS | INFO | NONE | DANGER | WARNING
+    });
+    newToastNotification.openToastNotification$();
   }
 }
