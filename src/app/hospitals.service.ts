@@ -10,28 +10,41 @@ import { catchError, tap, map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class HospitalsService {
-  private apiURL = `http://localhost:4050/api/hospitals`;
+  private apiURL = `https://hosp-mgmt.herokuapp.com/api/hospital`;
 
   constructor(private http: HttpClient) {}
 
-  getHospitals(): Observable<Hospital[]> {
-    return this.http.get<Hospital[]>(this.apiURL).pipe(
-      tap((data) => {
-        console.log('All: ' + JSON.stringify(data));
-        console.log('Service mei');
-      }),
-      catchError(this.handleError)
+  public getHospitals() {
+    return this.http.get(this.apiURL);
+  }
+
+  public addHospitals(name: String, number: String) {
+    const body = {
+      hospitalname: name,
+      contactnumber: number,
+    };
+    console.log(
+      this.http.post(this.apiURL, body).subscribe((data) => console.log(data))
     );
   }
 
-  private handleError(err: HttpErrorResponse) {
-    let errorMessage = '';
-    if (err.error instanceof ErrorEvent) {
-      errorMessage = `An error occurred: ${err.error.message}`;
-    } else {
-      errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
-    }
-    console.error(errorMessage);
-    return throwError(errorMessage);
+  public editHospitals(name: String, number: String) {
+    const body = {
+      hospitalname: name,
+      contactnumber: number,
+    };
+    console.log(
+      this.http
+        .put(`${this.apiURL}/${name}`, body)
+        .subscribe((data) => console.log(data))
+    );
+  }
+
+  public delHospitals(name: String) {
+    let modifiedLink = this.apiURL + '/' + name;
+    console.log(modifiedLink);
+    console.log(
+      this.http.delete(modifiedLink).subscribe((data) => console.log(data))
+    );
   }
 }

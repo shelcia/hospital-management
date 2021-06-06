@@ -13,35 +13,109 @@
           <h2 class="py-2 px-5">Hospital List</h2>
         </div>
         <div class="card-body">
+          <div *ngIf="alert">
+            <div *ngIf="ifSuccess; else elseBlock">
+              <div class="alert alert-success" role="alert">
+                {{ content }}
+              </div>
+            </div>
+            <ng-template #elseBlock>
+              <div class="alert alert-danger" role="alert">
+                {{ content }}
+              </div>
+            </ng-template>
+          </div>
+
           <div class="text-end my-3">
             <button class="btn btn-success">Sort By Hospital Name</button>
           </div>
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">S no</th>
+                <th scope="col">Hospital Name</th>
+                <th scope="col">Contact Number</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+              <tr
+                *ngFor="let item of data; let i = index; let lastRecord = last"
+              >
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ item.hospitalname }}</td>
+                <td>{{ item.contactnumber }}</td>
+                <td>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button
+                      type="button"
+                      class="btn btn-outline-dark"
+                      title="View"
+                    >
+                      <span>
+                        <i class="material-icons" style="font-size: 15px">
+                          remove_red_eye</i
+                        >
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-outline-dark"
+                      title="Edit"
+                    >
+                      <i class="material-icons" style="font-size: 15px">edit</i>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-outline-dark"
+                      (click)="onDelete(item.hospitalname)"
+                      title="Delete"
+                    >
+                      <i class="material-icons" style="font-size: 15px"
+                        >delete</i
+                      >
+                    </button>
+                  </div>
+                </td>
               </tr>
               <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
+                <th></th>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Hospital name"
+                    [(ngModel)]="hospital"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Contact"
+                    [(ngModel)]="contact"
+                  />
+                </td>
+                <td>
+                  <div class="d-flex justify-content-between">
+                    <button
+                      class="btn btn-success"
+                      (click)="buttonSubmit()"
+                      title="Add Hospital"
+                    >
+                      <i class="material-icons" style="font-size: 15px">save</i>
+                    </button>
+                    <button
+                      class="btn btn-danger"
+                      title="Clear Fields"
+                      (click)="clearFields()"
+                    >
+                      <i class="material-icons" style="font-size: 15px"
+                        >cancel</i
+                      >
+                    </button>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
