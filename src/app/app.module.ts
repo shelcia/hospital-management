@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HospitalsService } from './hospitals.service';
-import { ToastComponent } from './toast/toast.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { FormsModule } from '@angular/forms';
     HospitalViewComponent,
     DepartmentViewComponent,
     NavbarComponent,
-    ToastComponent,
   ],
   imports: [
     BrowserModule,

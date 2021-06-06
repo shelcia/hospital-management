@@ -5,7 +5,7 @@
     </p>
   </div>
 </nav>
-<section class="bg-light">
+<section class="bg-light" style="min-height: 90vh">
   <div class="container">
     <div class="d-flex justify-content-center align-items-center p-5">
       <div class="card shadow-lg border-0">
@@ -27,7 +27,9 @@
           </div>
 
           <div class="text-end my-3">
-            <button class="btn btn-success">Sort By Hospital Name</button>
+            <button class="btn btn-success" (click)="onSort()">
+              Sort By Hospital Name
+            </button>
           </div>
           <table class="table">
             <thead>
@@ -51,6 +53,7 @@
                       type="button"
                       class="btn btn-outline-dark"
                       title="View"
+                      routerLink="/department/{{ item.hospitalname }}"
                     >
                       <span>
                         <i class="material-icons" style="font-size: 15px">
@@ -119,8 +122,22 @@
               </tr>
             </tbody>
           </table>
+          <div *ngIf="isDanger">
+            <p class="text-danger">Deleting the Record ...</p>
+          </div>
+          <div *ngIf="isAdding">
+            <p class="text-success">Adding the Record ...</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<footer class="navbar navbar-dark bg-primary shadow-sm">
+  <div class="container-fluid">
+    <p class="navbar-brand mb-0 mx-auto text-capitalise">
+      Copyright © 2018 Hospital
+    </p>
+  </div>
+</footer>

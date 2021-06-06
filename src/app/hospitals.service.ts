@@ -11,6 +11,7 @@ import { catchError, tap, map } from 'rxjs/operators';
 })
 export class HospitalsService {
   private apiURL = `https://hosp-mgmt.herokuapp.com/api/hospital`;
+  private deptURL = `https://hosp-mgmt.herokuapp.com/api/department`;
 
   constructor(private http: HttpClient) {}
 
@@ -42,6 +43,49 @@ export class HospitalsService {
 
   public delHospitals(name: String) {
     let modifiedLink = this.apiURL + '/' + name;
+    console.log(modifiedLink);
+    console.log(
+      this.http.delete(modifiedLink).subscribe((data) => console.log(data))
+    );
+  }
+
+  public getDepartments(name: String) {
+    let modifiedLink = this.deptURL + '/' + name;
+    return this.http.get(modifiedLink);
+  }
+
+  public addDepartment(
+    dept: String,
+    name: String,
+    head: String,
+    number: String
+  ) {
+    const body = {
+      departmentname: dept,
+      head: head,
+      contactnumber: number,
+      hospitalname: name,
+    };
+    console.log(
+      this.http.post(this.deptURL, body).subscribe((data) => console.log(data))
+    );
+  }
+
+  public editDepartment(name: String, number: String) {
+    const body = {
+      hospitalname: name,
+      contactnumber: number,
+    };
+    console.log(
+      this.http
+        .put(`${this.deptURL}/${name}`, body)
+        .subscribe((data) => console.log(data))
+    );
+  }
+
+  public delDepartment(name: String) {
+    console.log('clicked');
+    let modifiedLink = this.deptURL + '/' + name;
     console.log(modifiedLink);
     console.log(
       this.http.delete(modifiedLink).subscribe((data) => console.log(data))

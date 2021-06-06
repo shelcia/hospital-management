@@ -1,1 +1,146 @@
-<p>department-view works!</p>
+<nav class="navbar navbar-dark bg-primary shadow-sm">
+  <div class="container-fluid">
+    <p class="navbar-brand mb-0 mx-auto text-capitalise">
+      Hospital Management System
+    </p>
+  </div>
+</nav>
+<section class="bg-light" style="min-height: 90vh">
+  <div class="container">
+    <div class="d-flex justify-content-center align-items-center p-5">
+      <div class="card shadow-lg border-0">
+        <div class="card-header">
+          <h2 class="py-2 px-5">Department List</h2>
+        </div>
+        <div class="card-body">
+          <div *ngIf="alert">
+            <div *ngIf="ifSuccess; else elseBlock">
+              <div class="alert alert-success" role="alert">
+                {{ content }}
+              </div>
+            </div>
+            <ng-template #elseBlock>
+              <div class="alert alert-danger" role="alert">
+                {{ content }}
+              </div>
+            </ng-template>
+          </div>
+          <div class="text-end my-3">
+            <button class="btn btn-success" (click)="onSort()">
+              Sort By Department Name
+            </button>
+            <button class="btn btn-success ms-2" routerLink="/hospital">
+              Back
+            </button>
+          </div>
+          <div *ngIf="data.length === 0">
+            <td colspan="4"><p>No Departments in this Hospital</p></td>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">S no</th>
+                <th scope="col">Department Name</th>
+                <th scope="col">Head of the Department</th>
+                <th scope="col">Contact Number</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let item of data; let i = index; let lastRecord = last"
+              >
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ item.departmentname }}</td>
+                <td>{{ item.head }}</td>
+                <td>{{ item.contactnumber }}</td>
+                <td>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button
+                      type="button"
+                      class="btn btn-outline-dark"
+                      title="Edit"
+                    >
+                      <i class="material-icons" style="font-size: 15px">edit</i>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-outline-dark"
+                      title="Delete"
+                      (click)="onDelete(item.departmentname)"
+                    >
+                      <i class="material-icons" style="font-size: 15px"
+                        >delete</i
+                      >
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th></th>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Department name"
+                    [(ngModel)]="dept"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter HOD"
+                    [(ngModel)]="head"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Contact number"
+                    [(ngModel)]="contact"
+                  />
+                </td>
+                <td>
+                  <div class="d-flex justify-content-between">
+                    <button
+                      class="btn btn-success"
+                      title="Add Hospital"
+                      (click)="buttonSubmit()"
+                    >
+                      <i class="material-icons" style="font-size: 15px">save</i>
+                    </button>
+                    <button
+                      class="btn btn-danger"
+                      title="Clear Fields"
+                      (click)="clearFields()"
+                    >
+                      <i class="material-icons" style="font-size: 15px"
+                        >cancel</i
+                      >
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="isDanger">
+            <p class="text-danger">Deleting the Record ...</p>
+          </div>
+          <div *ngIf="isAdding">
+            <p class="text-success">Adding the Record ...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="navbar navbar-dark bg-primary shadow-sm">
+  <div class="container-fluid">
+    <p class="navbar-brand mb-0 mx-auto text-capitalise">
+      Copyright © 2018 Hospital
+    </p>
+  </div>
+</footer>
